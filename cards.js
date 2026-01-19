@@ -28,10 +28,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 1
             );
             
-            // Calculate rotation - PUSH corner under mouse into screen
-            // If current calculation gives opposite effect, invert it
-            const rotateX = -centerY / 3.5;
-            const rotateY = -centerX / 3.5;
+            // DEBUG: Add visual indicators to understand the coordinate system
+            console.log(`Mouse at: (${x.toFixed(1)}, ${y.toFixed(1)}), Center: (${centerX.toFixed(1)}, ${centerY.toFixed(1)})`);
+
+            // Calculate rotation - let's test each corner individually
+            let rotateX, rotateY;
+
+            if (centerX < 0 && centerY < 0) {
+                // Top-left quadrant
+                rotateX = centerY / 3.5; // Should push top away
+                rotateY = centerX / 3.5; // Should push left away
+                console.log('Top-left: rotateX=' + rotateX.toFixed(2) + ', rotateY=' + rotateY.toFixed(2));
+            } else if (centerX > 0 && centerY < 0) {
+                // Top-right quadrant
+                rotateX = centerY / 3.5; // Should push top away
+                rotateY = centerX / 3.5; // Should push right away (rotateY positive)
+                console.log('Top-right: rotateX=' + rotateX.toFixed(2) + ', rotateY=' + rotateY.toFixed(2));
+            } else if (centerX < 0 && centerY > 0) {
+                // Bottom-left quadrant
+                rotateX = centerY / 3.5; // Should push bottom away (rotateX positive)
+                rotateY = centerX / 3.5; // Should push left away
+                console.log('Bottom-left: rotateX=' + rotateX.toFixed(2) + ', rotateY=' + rotateY.toFixed(2));
+            } else {
+                // Bottom-right quadrant
+                rotateX = centerY / 3.5; // Should push bottom away (rotateX positive)
+                rotateY = centerX / 3.5; // Should push right away (rotateY positive)
+                console.log('Bottom-right: rotateX=' + rotateX.toFixed(2) + ', rotateY=' + rotateY.toFixed(2));
+            }
 
             // Calculate viewing angle for iridescence (how much the surface is tilted)
             const viewingAngle = Math.atan2(Math.abs(centerY), Math.abs(centerX)) * (180 / Math.PI);
