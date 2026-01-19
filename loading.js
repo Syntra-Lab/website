@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadingScreen.style.width = 'auto';
         loadingScreen.style.height = 'auto';
         loadingScreen.style.pointerEvents = 'none';
-        
+
         // Enable pointer events only on the container (the logo button)
         container.style.pointerEvents = 'auto';
         container.style.cursor = 'pointer';
@@ -232,5 +232,21 @@ document.addEventListener('DOMContentLoaded', () => {
         container.addEventListener('click', () => {
             window.location.href = '/';
         });
+
+        // Function to update logo position on resize
+        function updateLogoPosition() {
+            const scaledSize = containerSize * scale;
+            const deadSpace = ((containerSize - 140) / 2) * scale;
+            const newFinalTop = window.innerHeight - scaledSize - margin + deadSpace;
+            const newFinalLeft = window.innerWidth - scaledSize - margin + deadSpace;
+
+            gsap.set(container, {
+                top: newFinalTop,
+                left: newFinalLeft
+            });
+        }
+
+        // Add resize listener to keep logo in bottom-right corner
+        window.addEventListener('resize', updateLogoPosition);
     }, holdTime + moveToCornerDuration);
 });

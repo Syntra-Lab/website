@@ -138,7 +138,7 @@ h1 {
     margin-top: 0.5rem;
 }
 
-/* App Grid */
+/* App Grid with colorful gradient background for liquid glass effect */
 .app-grid {
     flex: 1;
     display: flex;
@@ -150,6 +150,16 @@ h1 {
     margin: 0 auto;
     width: 100%;
     perspective: 1000px;
+    
+    /* Colorful gradient background - Apple-style */
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 50%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 50% 20%, rgba(255, 219, 120, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 50% 80%, rgba(120, 219, 255, 0.2) 0%, transparent 50%),
+        linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #fda085 100%);
+    background-size: 300% 300%;
+    background-attachment: fixed;
 }
 
 /* Tarot Card - Holographic Effect */
@@ -202,30 +212,23 @@ h1 {
     position: relative;
     width: 100%;
     height: 100%;
-    background: linear-gradient(145deg, #2a2a2a 0%, #1a1a1a 100%);
+    background: rgba(255, 255, 255, 0.1);
     border-radius: var(--card-radius);
     overflow: hidden;
     transform-style: preserve-3d;
 
-    /* VISIBLE CARD THICKNESS: pronounced embossed edges and depth */
+    /* Apple liquid glass effect - transparent glass */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow:
-        /* Main depth shadow - card sitting on surface */
-        0 16px 32px rgba(0, 0, 0, 0.5),
-        /* STRONG embossed top edge - bright white highlight */
-        inset 0 3px 6px rgba(255, 255, 255, 0.4),
-        /* STRONG embossed bottom edge - deep black shadow */
-        inset 0 -3px 6px rgba(0, 0, 0, 0.6),
-        /* STRONG left edge thickness */
-        inset 3px 0 6px rgba(0, 0, 0, 0.4),
-        /* STRONG right edge thickness */
-        inset -3px 0 6px rgba(0, 0, 0, 0.4),
-        /* Corner thickness effects - very visible */
-        4px 4px 8px rgba(0, 0, 0, 0.3),
-        -4px 4px 8px rgba(0, 0, 0, 0.3),
-        4px -4px 8px rgba(0, 0, 0, 0.3),
-        -4px -4px 8px rgba(0, 0, 0, 0.3);
+        /* Soft shadow for depth */
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        /* Glass reflection */
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.1);
 
-    transition: box-shadow 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 /* VISIBLE THICKNESS BORDER - raised edge effect */
@@ -243,42 +246,46 @@ h1 {
     z-index: 5;
 }
 
-/* DRAMATIC THICKNESS ON HOVER - card floats and edges become more pronounced */
+/* Liquid glass hover effect */
 .tarot-card:hover .card-inner {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    transform: translateZ(10px);
     box-shadow:
-        /* Card lifts dramatically off surface */
-        0 24px 48px rgba(0, 0, 0, 0.4),
-        /* SUPER embossed edges on hover */
-        inset 0 4px 8px rgba(255, 255, 255, 0.6),
-        inset 0 -4px 8px rgba(0, 0, 0, 0.7),
-        inset 4px 0 8px rgba(0, 0, 0, 0.5),
-        inset -4px 0 8px rgba(0, 0, 0, 0.5),
-        /* Enhanced corner thickness */
-        6px 6px 12px rgba(0, 0, 0, 0.4),
-        -6px 6px 12px rgba(0, 0, 0, 0.4),
-        6px -6px 12px rgba(0, 0, 0, 0.4),
-        -6px -6px 12px rgba(0, 0, 0, 0.4);
+        0 12px 40px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.2);
 }
 
-.tarot-card:hover .card-inner {
-    box-shadow: 
-        0 0 3px -1px white,
-        0 0 3px 1px rgba(255, 200, 100, 0.5),
-        0 0 12px 2px rgba(100, 200, 255, 0.3),
-        0px 10px 20px -5px black,
-        0 0 40px -30px rgba(100, 200, 255, 0.5);
-}
 
-/* Card image area */
+
+/* Card image area - transparent glass */
 .card-image {
     position: relative;
     width: 100%;
     height: 70%;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    background: linear-gradient(180deg, #3a3a3a 0%, #2a2a2a 100%);
+    background: rgba(255, 255, 255, 0.05);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 1rem;
+    padding-bottom: 0;
+}
+
+.card-art {
+    /* Make the image square based on card width with equal side padding */
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    object-position: center;
+    /* Disable anti-aliasing for pixel art */
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
 }
 
 .card-placeholder {
@@ -305,21 +312,23 @@ h1 {
 .card-title {
     font-size: 1.1rem;
     font-weight: 600;
-    color: #fff;
+    color: rgba(255, 255, 255, 0.9);
     margin-bottom: 0.25rem;
     letter-spacing: 0.02em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .card-description {
     font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.7);
     line-height: 1.4;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 /*
-   SUBTLE SHINE EFFECT
-   Complements the opalescent effect - soft holographic rainbow
-*/
+    LIQUID GLASS SHINE
+    Very subtle glass reflection
+ */
 .card-shine {
     position: absolute;
     top: 0;
@@ -328,33 +337,30 @@ h1 {
     height: 100%;
     pointer-events: none;
     border-radius: var(--card-radius);
-    z-index: 1; /* Behind iridescence */
+    z-index: 1;
 
-    /* Very subtle rainbow that shifts with background position */
+    /* Glass-like sheen that follows the light */
     background:
-        repeating-linear-gradient(
+        linear-gradient(
             135deg,
-            rgba(255, 192, 203, 0.1) 0%,   /* Very soft pink */
-            rgba(176, 224, 230, 0.08) 15%, /* Very soft powder blue */
-            rgba(255, 218, 185, 0.1) 30%,  /* Very soft peach */
-            rgba(216, 191, 216, 0.08) 45%, /* Very soft lavender */
-            rgba(255, 182, 193, 0.1) 60%,  /* Very soft blush */
-            rgba(255, 192, 203, 0.08) 75%  /* Very soft pink */
+            rgba(255, 255, 255, 0.1) 0%,
+            transparent 40%,
+            rgba(255, 255, 255, 0.05) 60%,
+            transparent 100%
         );
 
-    background-size: 300% 300%;
+    background-size: 200% 200%;
     background-position: var(--background-x) var(--background-y);
 
-    /* Very subtle, just adds a hint of color variation */
-    mix-blend-mode: multiply;
-    opacity: calc(var(--card-opacity) * 0.3);
-    transition: opacity 0.5s ease-out;
+    mix-blend-mode: overlay;
+    opacity: calc(var(--card-opacity) * 0.6);
+    transition: opacity 0.3s ease-out;
 }
 
 /*
-   CHROMATIC ABERRATION - LIGHT REFRACTION EFFECT
-   Simulates white light splitting into rainbow colors through glass/prism
-*/
+   SUBTLE LIQUID GLASS IRIDESCENCE
+   Much more subtle - just a hint of color shimmer
+ */
 .card-iridescent {
     position: absolute;
     top: 0;
@@ -367,7 +373,6 @@ h1 {
     overflow: hidden;
 }
 
-/* PRIMARY REFRACTION - White light splitting into spectrum */
 .card-iridescent::before {
     content: '';
     position: absolute;
@@ -377,98 +382,25 @@ h1 {
     height: 100%;
     border-radius: var(--card-radius);
 
-    /* Chromatic aberration: different colors refract at different angles */
+    /* Very subtle rainbow shimmer following the light */
     background:
-        /* Red channel - least refracted */
         radial-gradient(
-            ellipse at calc(var(--pointer-x) + 20px) calc(var(--pointer-y) + 10px),
-            rgba(255, 0, 0, 0.6) 0%,
-            rgba(255, 0, 0, 0.3) 20%,
-            transparent 40%
-        ),
-        /* Orange channel */
-        radial-gradient(
-            ellipse at calc(var(--pointer-x) + 15px) calc(var(--pointer-y) + 8px),
-            rgba(255, 165, 0, 0.5) 0%,
-            rgba(255, 165, 0, 0.25) 18%,
-            transparent 36%
-        ),
-        /* Yellow channel */
-        radial-gradient(
-            ellipse at calc(var(--pointer-x) + 10px) calc(var(--pointer-y) + 5px),
-            rgba(255, 255, 0, 0.4) 0%,
-            rgba(255, 255, 0, 0.2) 15%,
-            transparent 30%
-        ),
-        /* Green channel */
-        radial-gradient(
-            ellipse at calc(var(--pointer-x) + 5px) calc(var(--pointer-y) + 3px),
-            rgba(0, 255, 0, 0.4) 0%,
-            rgba(0, 255, 0, 0.2) 15%,
-            transparent 30%
-        ),
-        /* Blue channel */
-        radial-gradient(
-            ellipse at calc(var(--pointer-x) - 5px) calc(var(--pointer-y) - 3px),
-            rgba(0, 0, 255, 0.4) 0%,
-            rgba(0, 0, 255, 0.2) 15%,
-            transparent 30%
-        ),
-        /* Indigo channel */
-        radial-gradient(
-            ellipse at calc(var(--pointer-x) - 10px) calc(var(--pointer-y) - 5px),
-            rgba(75, 0, 130, 0.4) 0%,
-            rgba(75, 0, 130, 0.2) 15%,
-            transparent 30%
-        ),
-        /* Violet channel - most refracted */
-        radial-gradient(
-            ellipse at calc(var(--pointer-x) - 15px) calc(var(--pointer-y) - 8px),
-            rgba(138, 43, 226, 0.4) 0%,
-            rgba(138, 43, 226, 0.2) 15%,
+            ellipse at var(--pointer-x) var(--pointer-y),
+            rgba(255, 255, 255, 0.3) 0%,
+            rgba(255, 220, 180, 0.15) 10%,
+            rgba(180, 220, 255, 0.15) 20%,
             transparent 30%
         );
 
     mix-blend-mode: screen;
-    opacity: calc(var(--card-opacity) * 0.8);
+    opacity: calc(var(--card-opacity) * 0.4);
     transition: opacity 0.2s ease-out;
 }
 
-/* SECONDARY REFRACTION - Surface highlights */
-.card-iridescent::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: var(--card-radius);
-
-    /* White light refraction lines that shift with viewing angle */
-    background:
-        linear-gradient(
-            calc(var(--viewing-angle) + 45deg),
-            transparent 0%,
-            rgba(255, 255, 255, 0.8) 10%,
-            rgba(255, 255, 255, 0.4) 20%,
-            transparent 30%,
-            rgba(255, 255, 255, 0.6) 40%,
-            rgba(255, 255, 255, 0.3) 50%,
-            transparent 60%,
-            rgba(255, 255, 255, 0.7) 70%,
-            rgba(255, 255, 255, 0.35) 80%,
-            transparent 90%
-        );
-
-    mix-blend-mode: overlay;
-    opacity: calc(var(--card-opacity) * 0.6);
-    transition: opacity 0.3s ease-out;
-}
-
 /*
-   GLARE EFFECT
-   Simulates direct light reflection - follows pointer position directly
-*/
+   LIQUID GLASS GLARE
+   Soft light reflection on glass surface
+ */
 .card-glare {
     position: absolute;
     top: 0;
@@ -479,16 +411,16 @@ h1 {
     border-radius: var(--card-radius);
     z-index: 4;
 
-    /* Radial gradient centered on mouse position */
+    /* Softer radial gradient for glass surface */
     background-image: radial-gradient(
         farthest-corner circle at var(--pointer-x) var(--pointer-y),
-        hsla(0, 0%, 100%, 0.6) 8%,
-        hsla(0, 0%, 100%, 0.3) 18%,
-        hsla(0, 0%, 0%, 0.4) 85%
+        rgba(255, 255, 255, 0.4) 5%,
+        rgba(255, 255, 255, 0.2) 15%,
+        transparent 35%
     );
 
     mix-blend-mode: overlay;
-    opacity: var(--card-opacity);
+    opacity: calc(var(--card-opacity) * 0.8);
     transition: opacity 0.2s ease-out;
 }
 

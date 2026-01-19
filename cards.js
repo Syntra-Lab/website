@@ -36,23 +36,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (centerX < 0 && centerY < 0) {
                 // Top-left quadrant
-                rotateX = centerY / 3.5; // Should push top away
-                rotateY = centerX / 3.5; // Should push left away
+				// 
+                rotateX = centerX / 3.5; // Horizontal movement affects X rotation
+                rotateY = -centerY / 3.5; // Inverted: top should be positive Y rotation
                 console.log('Top-left: rotateX=' + rotateX.toFixed(2) + ', rotateY=' + rotateY.toFixed(2));
             } else if (centerX > 0 && centerY < 0) {
                 // Top-right quadrant
-                rotateX = centerY / 3.5; // Should push top away
-                rotateY = centerX / 3.5; // Should push right away (rotateY positive)
+                rotateX = centerX / 3.5; // Horizontal movement affects X rotation
+                rotateY = -centerY / 3.5; // Inverted: top should be positive Y rotation
                 console.log('Top-right: rotateX=' + rotateX.toFixed(2) + ', rotateY=' + rotateY.toFixed(2));
             } else if (centerX < 0 && centerY > 0) {
                 // Bottom-left quadrant
-                rotateX = centerY / 3.5; // Should push bottom away (rotateX positive)
-                rotateY = centerX / 3.5; // Should push left away
+                rotateX = centerX / 3.5; // Horizontal movement affects X rotation
+                rotateY = -centerY / 3.5; // Inverted: bottom should be negative Y rotation
                 console.log('Bottom-left: rotateX=' + rotateX.toFixed(2) + ', rotateY=' + rotateY.toFixed(2));
             } else {
                 // Bottom-right quadrant
-                rotateX = centerY / 3.5; // Should push bottom away (rotateX positive)
-                rotateY = centerX / 3.5; // Should push right away (rotateY positive)
+                rotateX = centerX / 3.5; // Horizontal movement affects X rotation
+                rotateY = -centerY / 3.5; // Inverted: bottom should be negative Y rotation
                 console.log('Bottom-right: rotateX=' + rotateX.toFixed(2) + ', rotateY=' + rotateY.toFixed(2));
             }
 
@@ -91,6 +92,59 @@ document.addEventListener('DOMContentLoaded', () => {
             card.style.setProperty('--background-y', '50%');
             card.style.setProperty('--viewing-angle', '0deg');
             card.style.setProperty('--tilt-intensity', '0');
+        });
+
+        // Click animation - card flies to center, spins and zooms
+        const cardLink = card.querySelector('.card-rotator');
+        cardLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const href = cardLink.href;
+
+            // Get card's current position
+            const rect = card.getBoundingClientRect();
+            const cardCenterX = rect.left + rect.width / 2;
+            const cardCenterY = rect.top + rect.height / 2;
+
+            // Calculate translation to viewport center
+            const viewportCenterX = window.innerWidth / 2;
+            const viewportCenterY = window.innerHeight / 2;
+            const translateX = viewportCenterX - cardCenterX;
+            const translateY = viewportCenterY - cardCenterY;
+
+            // Create animation timeline
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    window.location.href = href;
+                }
+            });
+
+            // Disable hover effects during animation
+            card.style.pointerEvents = 'none';
+
+            // Animate card to center, lift it forward, spin and zoom
+            tl.to(card, {
+                x: translateX,
+                y: translateY,
+                scale: 1.2,
+                z: 200,
+                duration: 0.5,
+                ease: "power2.inOut"
+            }, 0);
+
+            // Spin and zoom in dramatically - full rotation and more
+            tl.to(cardLink, {
+                rotateY: 1080,
+                scale: 3,
+                duration: 1.0,
+                ease: "power2.in"
+            }, 0.3);
+
+            // Fade out everything else
+            tl.to('.app-grid', {
+                opacity: 0,
+                duration: 0.4,
+                ease: "power2.out"
+            }, 0.5);
         });
     });
 });
