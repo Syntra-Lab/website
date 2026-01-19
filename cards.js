@@ -28,8 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 1
             );
             
-            // Calculate rotation - PUSH into screen where mouse hovers
-            // Invert the effect to push where mouse is
+            // Calculate rotation - PUSH corner under mouse into screen
+            // If current calculation gives opposite effect, invert it
             const rotateX = -centerY / 3.5;
             const rotateY = -centerX / 3.5;
 
