@@ -29,13 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
             );
             
             // Calculate rotation - PUSH into screen where mouse hovers
-            // Consistent push effect for all quadrants:
-            // Top area (centerY negative) -> rotateX negative (push top back)
-            // Bottom area (centerY positive) -> rotateX positive (push bottom back)
-            // Left area (centerX negative) -> rotateY positive (push left back)
-            // Right area (centerX positive) -> rotateY negative (push right back)
-            const rotateX = centerY / 3.5;
-            const rotateY = centerX / 3.5;
+            // Invert the effect to push where mouse is
+            const rotateX = -centerY / 3.5;
+            const rotateY = -centerX / 3.5;
 
             // Calculate viewing angle for iridescence (how much the surface is tilted)
             const viewingAngle = Math.atan2(Math.abs(centerY), Math.abs(centerX)) * (180 / Math.PI);
