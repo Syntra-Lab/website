@@ -30,12 +30,20 @@ function renderChart() {
     emptyState.classList.add('hidden');
     canvas.style.display = 'block';
 
-    // Prepare data
-    const labels = sessions.map((s, i) => `Session ${i + 1}`);
-    const inhaleData = sessions.map(s => s.averages.inhale);
-    const holdData = sessions.map(s => s.averages.hold);
-    const exhaleData = sessions.map(s => s.averages.exhale);
-    const retentionData = sessions.map(s => s.averages.retention || 0);
+    // Flatten all cycles from all sessions into individual data points
+    const allCycles = [];
+    sessions.forEach(session => {
+        session.cycles.forEach(cycle => {
+            allCycles.push(cycle);
+        });
+    });
+
+    // Prepare data - each cycle is its own X value
+    const labels = allCycles.map((_, i) => `Cycle ${i + 1}`);
+    const inhaleData = allCycles.map(c => c.inhale);
+    const holdData = allCycles.map(c => c.hold);
+    const exhaleData = allCycles.map(c => c.exhale);
+    const retentionData = allCycles.map(c => c.retention || 0);
 
     const chartData = {
         labels: labels,
