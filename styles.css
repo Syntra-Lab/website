@@ -215,13 +215,11 @@ h1 {
 .card-image {
     position: relative;
     width: 100%;
-    height: 70%;
     display: flex;
     align-items: flex-start;
     justify-content: center;
     padding: 1rem;
-    padding-bottom: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .card-art {
@@ -234,6 +232,8 @@ h1 {
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
 }
 
 .card-placeholder {
@@ -276,6 +276,12 @@ h1 {
 .card-iridescent,
 .card-glare {
     display: none;
+}
+
+/* Coming soon card styles */
+.tarot-card.coming-soon {
+    pointer-events: none;
+    cursor: default;
 }
 
 /* Placeholder card styles */
