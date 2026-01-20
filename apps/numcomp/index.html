@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NumComp - Visual Numerical Computing</title>
+    <link rel="stylesheet" href="../../global.css">
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Rete.js -->
+    <script src="https://cdn.jsdelivr.net/npm/rete@2.0.3/rete.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/rete-area-plugin@2.0.3/rete-area-plugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/rete-connection-plugin@2.0.2/rete-connection-plugin.min.js"></script>
+
+    <!-- Numerical computing libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.3.0/math.min.js"></script>
+
+    <!-- Visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header>
+            <a href="../../index.html" class="logo-link">
+                <div class="static-logo">
+                    <div class="observer obs-1"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#F5C542"/></svg></div>
+                    <div class="observer obs-2"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#F5A3C7"/></svg></div>
+                    <div class="observer obs-3"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#A3E048"/></svg></div>
+                    <div class="observer obs-4"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#7DD3E8"/></svg></div>
+                    <div class="center-circle"></div>
+                    <svg class="center-star" viewBox="0 0 160 160"><path d="M80,40 A40,40 0 0,0 120,80 A40,40 0 0,0 80,120 A40,40 0 0,0 40,80 A40,40 0 0,0 80,40 Z" fill="white"/></svg>
+                </div>
+            </a>
+            <h1>NumComp</h1>
+            <p class="subtitle">Visual Numerical Computing</p>
+        </header>
+
+        <!-- Main content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h2>Nodes</h2>
+                    <input type="text" id="search-nodes" placeholder="Search..." class="search-input">
+                </div>
+
+                <div class="node-categories">
+                    <!-- Input/Output -->
+                    <div class="category">
+                        <h3 class="category-title">Input/Output</h3>
+                        <div class="node-list">
+                            <button class="node-button" data-node="number-input">Number</button>
+                            <button class="node-button" data-node="function-input">Function</button>
+                            <button class="node-button" data-node="output">Output</button>
+                            <button class="node-button" data-node="plot">Plot</button>
+                        </div>
+                    </div>
+
+                    <!-- Root Finding -->
+                    <div class="category">
+                        <h3 class="category-title">Root Finding</h3>
+                        <div class="node-list">
+                            <button class="node-button" data-node="bisection">Bisection Method</button>
+                            <button class="node-button" data-node="newton">Newton's Method</button>
+                            <button class="node-button" data-node="secant">Secant Method</button>
+                            <button class="node-button" data-node="fixed-point">Fixed Point</button>
+                        </div>
+                    </div>
+
+                    <!-- Integration -->
+                    <div class="category">
+                        <h3 class="category-title">Integration</h3>
+                        <div class="node-list">
+                            <button class="node-button" data-node="trapezoidal">Trapezoidal Rule</button>
+                            <button class="node-button" data-node="simpson">Simpson's Rule</button>
+                            <button class="node-button" data-node="romberg">Romberg</button>
+                        </div>
+                    </div>
+
+                    <!-- Differentiation -->
+                    <div class="category">
+                        <h3 class="category-title">Differentiation</h3>
+                        <div class="node-list">
+                            <button class="node-button" data-node="numeric-diff">Numerical Diff</button>
+                            <button class="node-button" data-node="richardson">Richardson</button>
+                        </div>
+                    </div>
+
+                    <!-- ODE Solvers -->
+                    <div class="category">
+                        <h3 class="category-title">ODE Solvers</h3>
+                        <div class="node-list">
+                            <button class="node-button" data-node="euler">Euler's Method</button>
+                            <button class="node-button" data-node="rk4">Runge-Kutta 4</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-footer">
+                    <button id="clear-btn" class="action-btn">Clear All</button>
+                    <button id="save-btn" class="action-btn">Save</button>
+                    <button id="load-btn" class="action-btn">Load</button>
+                </div>
+            </aside>
+
+            <!-- Editor -->
+            <div class="editor-container">
+                <div class="toolbar">
+                    <button id="run-btn" class="primary-btn">▶ Run</button>
+                    <button id="zoom-in-btn" class="toolbar-btn">+</button>
+                    <button id="zoom-out-btn" class="toolbar-btn">−</button>
+                    <button id="fit-btn" class="toolbar-btn">Fit</button>
+                </div>
+                <div id="rete-editor"></div>
+            </div>
+
+            <!-- Results Panel -->
+            <div class="results-panel">
+                <h2>Results</h2>
+                <div id="results-content">
+                    <p class="hint">Run your workflow to see results</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../theme.js"></script>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
