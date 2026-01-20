@@ -61,16 +61,9 @@ const state = {
     results: []
 };
 
-// DOM Elements
-const reteEditor = document.getElementById('rete-editor');
-const resultsContent = document.getElementById('results-content');
-const runBtn = document.getElementById('run-btn');
-const clearBtn = document.getElementById('clear-btn');
-const saveBtn = document.getElementById('save-btn');
-const loadBtn = document.getElementById('load-btn');
-const zoomInBtn = document.getElementById('zoom-in-btn');
-const zoomOutBtn = document.getElementById('zoom-out-btn');
-const fitBtn = document.getElementById('fit-btn');
+// DOM Elements (will be initialized on DOMContentLoaded)
+let reteEditor, resultsContent, runBtn, clearBtn, saveBtn, loadBtn;
+let zoomInBtn, zoomOutBtn, fitBtn;
 
 // Canvas setup
 let canvas, ctx;
@@ -515,87 +508,103 @@ function formatValue(value) {
     return String(value);
 }
 
-// Event Handlers
-runBtn.addEventListener('click', runWorkflow);
+// Wait for DOM to load
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('NumComp: DOM loaded, initializing...');
 
-clearBtn.addEventListener('click', () => {
-    if (confirm('Clear all nodes?')) {
-        state.nodes.clear();
-        state.connections = [];
-        state.results = [];
-        resultsContent.innerHTML = '<p class="hint">Run your workflow to see results</p>';
+    // Initialize DOM elements
+    reteEditor = document.getElementById('rete-editor');
+    resultsContent = document.getElementById('results-content');
+    runBtn = document.getElementById('run-btn');
+    clearBtn = document.getElementById('clear-btn');
+    saveBtn = document.getElementById('save-btn');
+    loadBtn = document.getElementById('load-btn');
+    zoomInBtn = document.getElementById('zoom-in-btn');
+    zoomOutBtn = document.getElementById('zoom-out-btn');
+    fitBtn = document.getElementById('fit-btn');
+
+    // Initialize canvas
+    initCanvas();
+    render();
+
+    // Button event handlers
+    runBtn.addEventListener('click', runWorkflow);
+
+    clearBtn.addEventListener('click', () => {
+        if (confirm('Clear all nodes?')) {
+            state.nodes.clear();
+            state.connections = [];
+            state.results = [];
+            resultsContent.innerHTML = '<p class="hint">Run your workflow to see results</p>';
+            render();
+        }
+    });
+
+    saveBtn.addEventListener('click', () => {
+        const data = {
+            nodes: Array.from(state.nodes.entries()).map(([id, node]) => ({
+                id,
+                type: node.constructor.name,
+                label: node.label,
+                x: node.x,
+                y: node.y,
+                controls: node.controls
+            })),
+            connections: state.connections
+        };
+        localStorage.setItem('numcomp-workflow', JSON.stringify(data));
+        alert('Workflow saved!');
+    });
+
+    loadBtn.addEventListener('click', () => {
+        const data = localStorage.getItem('numcomp-workflow');
+        if (data) {
+            alert('Load feature coming soon!');
+        } else {
+            alert('No saved workflow found');
+        }
+    });
+
+    zoomInBtn.addEventListener('click', () => {
+        scale *= 1.2;
         render();
-    }
-});
-
-saveBtn.addEventListener('click', () => {
-    const data = {
-        nodes: Array.from(state.nodes.entries()).map(([id, node]) => ({
-            id,
-            type: node.constructor.name,
-            label: node.label,
-            x: node.x,
-            y: node.y,
-            controls: node.controls
-        })),
-        connections: state.connections
-    };
-    localStorage.setItem('numcomp-workflow', JSON.stringify(data));
-    alert('Workflow saved!');
-});
-
-loadBtn.addEventListener('click', () => {
-    const data = localStorage.getItem('numcomp-workflow');
-    if (data) {
-        // Simple load - would need proper reconstruction in full version
-        alert('Load feature coming soon!');
-    } else {
-        alert('No saved workflow found');
-    }
-});
-
-zoomInBtn.addEventListener('click', () => {
-    scale *= 1.2;
-    render();
-});
-
-zoomOutBtn.addEventListener('click', () => {
-    scale *= 0.8;
-    render();
-});
-
-fitBtn.addEventListener('click', () => {
-    scale = 1;
-    panX = 0;
-    panY = 0;
-    render();
-});
-
-// Node buttons
-document.querySelectorAll('.node-button').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const nodeType = btn.dataset.node;
-        createNode(nodeType);
     });
-});
 
-// Search functionality
-document.getElementById('search-nodes').addEventListener('input', (e) => {
-    const search = e.target.value.toLowerCase();
+    zoomOutBtn.addEventListener('click', () => {
+        scale *= 0.8;
+        render();
+    });
+
+    fitBtn.addEventListener('click', () => {
+        scale = 1;
+        panX = 0;
+        panY = 0;
+        render();
+    });
+
+    // Node buttons
     document.querySelectorAll('.node-button').forEach(btn => {
-        const text = btn.textContent.toLowerCase();
-        btn.style.display = text.includes(search) ? 'block' : 'none';
+        btn.addEventListener('click', () => {
+            const nodeType = btn.dataset.node;
+            console.log('Creating node:', nodeType);
+            createNode(nodeType);
+        });
     });
+
+    // Search functionality
+    document.getElementById('search-nodes').addEventListener('input', (e) => {
+        const search = e.target.value.toLowerCase();
+        document.querySelectorAll('.node-button').forEach(btn => {
+            const text = btn.textContent.toLowerCase();
+            btn.style.display = text.includes(search) ? 'block' : 'none';
+        });
+    });
+
+    // Create a sample workflow
+    createNode('function-input');
+    createNode('number-input');
+    createNode('newton');
+    createNode('output');
+
+    console.log('NumComp initialized! Nodes:', state.nodes.size);
 });
-
-// Initialize
-initCanvas();
-render();
-
-// Create a sample workflow
-createNode('function-input');
-createNode('number-input');
-createNode('newton');
-createNode('output');
-
-console.log('NumComp initialized!');
