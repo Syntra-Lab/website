@@ -29,30 +29,40 @@
 }
 
 body {
-    opacity: 0;
-    animation: fadeIn 0.6s ease-out forwards;
     background-color: var(--bg-primary);
     transition: background-color 0.3s ease;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+/* Page transition: solid black/white → reveal content */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 99999;
+    animation: pageFadeIn 0.6s ease-out 0.1s forwards;
+    pointer-events: none;
+}
+
+[data-theme="light"] body::before {
+    background: #fff;
+}
+
+@keyframes pageFadeIn {
+    from { opacity: 1; }
+    to { opacity: 0; }
 }
 
 /* Theme toggle button - always visible in top-right corner */
 .theme-toggle {
     position: fixed;
-    top: 1.5rem;
-    right: 1.5rem;
+    top: 2.25rem;
+    right: 1rem;
+    transform: translateY(-50%);
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: none;
     border-radius: 8px;
     padding: 0.75rem;
     cursor: pointer;
@@ -60,12 +70,11 @@ body {
     z-index: 10000;
     transition: all 0.3s ease;
     line-height: 1;
-    border: none;
 }
 
 .theme-toggle:hover {
     background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.1);
+    transform: translateY(-50%) scale(1.1);
 }
 
 /* Shared static logo component */
@@ -74,6 +83,7 @@ body {
     left: 16px;
     top: 16px;
     text-decoration: none;
+    color: inherit;
     transition: transform 0.2s ease;
     z-index: 100;
 }
@@ -97,21 +107,25 @@ body {
 .static-logo .obs-1 {
     top: 0;
     left: 0;
+    color: #F5C542;
 }
 
 .static-logo .obs-2 {
     top: 0;
     right: 0;
+    color: #F5A3C7;
 }
 
 .static-logo .obs-3 {
     bottom: 0;
     left: 0;
+    color: #A3E048;
 }
 
 .static-logo .obs-4 {
     bottom: 0;
     right: 0;
+    color: #7DD3E8;
 }
 
 .static-logo .observer svg {
@@ -137,6 +151,7 @@ body {
     transform: translate(-50%, -50%);
     width: 42px;
     height: 42px;
+    color: white;
     filter: drop-shadow(0 0 0px rgba(255, 255, 255, 0));
     transition: filter 0.3s ease;
 }

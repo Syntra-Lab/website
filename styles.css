@@ -102,6 +102,8 @@
 /* Main content hidden until loaded */
 #main-content {
     opacity: 0;
+    position: fixed;
+    inset: 4.5rem 1rem 1rem;
 }
 
 #main-content.visible {
@@ -143,175 +145,158 @@ h1 {
     margin-top: 0.5rem;
 }
 
-/* App Grid */
-.app-grid {
-    flex: 1;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2.5rem;
+/* Post Grid — three cards per row */
+.post-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
     padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
     width: 100%;
-    perspective: 1000px;
+    height: 100%;
+    align-content: start;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.35),
+                inset 0 1px 3px rgba(0, 0, 0, 0.25),
+                0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-/* Card - Liquid Glass with Tilt Effect */
+[data-theme="light"] .post-grid {
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.08),
+                inset 0 1px 3px rgba(0, 0, 0, 0.05),
+                0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+/* ============================================
+   Cards — window-ratio horizontal thumbnails
+   ============================================ */
+
 .tarot-card {
-    --card-width: 220px;
-    --card-ratio: 1.6;
     --card-radius: 12px;
+    --tilt-x: 0deg;
+    --tilt-y: 0deg;
 
-    /* Dynamic values for tilt - updated by JS */
-    --rotate-x: 0deg;
-    --rotate-y: 0deg;
-
-    width: var(--card-width);
-    height: calc(var(--card-width) * var(--card-ratio));
+    width: 100%;
+    aspect-ratio: 16 / 10;
     cursor: pointer;
-    perspective: 600px;
+    perspective: 800px;
 }
 
 .card-rotator {
-    display: block;
+    display: flex;
     width: 100%;
     height: 100%;
     text-decoration: none;
     color: inherit;
-    transform-style: flat;
-    transform: rotateY(var(--rotate-x)) rotateX(var(--rotate-y)) translateZ(0);
+    transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
     transition: transform 0.15s ease-out;
-    backface-visibility: hidden;
 }
 
 .card-inner {
     position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 1fr auto;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.08);
     border-radius: var(--card-radius);
     overflow: hidden;
-
-    /* Simple liquid glass effect */
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-
-    transition: all 0.3s ease;
+    background: var(--bg-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* Hover effect */
+/* Bottom gradient scrim — absolutely positioned over the image */
+.card-scrim {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(to bottom, transparent, var(--bg-secondary));
+    z-index: 1;
+    pointer-events: none;
+}
+
 .tarot-card:hover .card-inner {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.16);
+    border-color: rgba(255, 255, 255, 0.22);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
 }
 
-.tarot-card:hover {
-    transform: translateY(-4px);
-}
-
-
-
-/* Card image area */
+/* Image — fills the entire card as background */
 .card-image {
-    position: relative;
-    width: 100%;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.card-art {
-    /* Make the image square based on card width with equal side padding */
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: contain;
-    object-position: center;
-    /* Disable anti-aliasing for pixel art */
-    image-rendering: pixelated;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: crisp-edges;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-}
-
-.card-placeholder {
-    width: 60%;
-    height: 60%;
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0.3;
+    padding: 1rem;
+    overflow: hidden;
 }
 
-.card-placeholder svg {
+.card-art {
     width: 100%;
     height: 100%;
-    color: rgba(255, 255, 255, 0.5);
+    object-fit: cover;
+    object-position: center;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    border-radius: 8px;
 }
 
-/* Card content */
+/* Content — overlaid at bottom-left, above scrim */
 .card-content {
-    padding: 1rem;
-    text-align: center;
+    grid-column: 1;
+    grid-row: 2;
+    padding: 1rem 1.25rem;
+    z-index: 2;
 }
 
 .card-title {
-    font-size: 1.1rem;
+    font-size: 1.4rem;
     font-weight: 600;
     color: var(--text-primary);
-    margin-bottom: 0.25rem;
-    letter-spacing: 0.02em;
+    margin-bottom: 0.2rem;
+    letter-spacing: 0.01em;
 }
 
 .card-description {
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
     line-height: 1.4;
 }
 
-/* Remove iridescent/shine/glare overlays */
-.card-shine,
-.card-iridescent,
-.card-glare {
-    display: none;
+/* Metadata — date at bottom-right */
+.card-meta {
+    grid-column: 2;
+    grid-row: 2;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: flex-end;
+    z-index: 2;
 }
 
-/* Coming soon card styles */
-.tarot-card.coming-soon {
+.card-date {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+}
+
+/* Draft */
+.tarot-card.draft {
     pointer-events: none;
     cursor: default;
+    opacity: 0.5;
 }
 
-/* Placeholder card styles */
-.tarot-card.placeholder {
-    opacity: 0.4;
-    pointer-events: none;
-}
-
-.tarot-card.placeholder .card-inner {
-    background: transparent;
-    border: 2px dashed var(--beige-dark);
-    box-shadow: none;
-}
-
-.tarot-card.placeholder .card-image {
-    background: transparent;
-    border-bottom: 1px dashed var(--beige-dark);
-}
-
-.tarot-card.placeholder .card-title,
-.tarot-card.placeholder .card-description {
-    color: var(--text-muted);
-}
-
-.tarot-card.placeholder .card-placeholder svg {
-    color: var(--beige-dark);
+.tarot-card.draft .card-inner {
+    border-style: dashed;
 }
 
 /* Footer */
@@ -323,21 +308,29 @@ footer {
 }
 
 /* Responsive */
-@media (max-width: 480px) {
-    header {
-        padding: 2rem 1rem 1.5rem;
+@media (max-width: 900px) {
+    #main-content {
+        padding: 4.5rem 0.75rem 0.75rem;
     }
-
-    h1 {
-        font-size: 2rem;
+    .post-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+        padding: 1.25rem;
     }
+}
 
-    .app-grid {
+@media (max-width: 520px) {
+    #main-content {
+        padding: 4.5rem 0.5rem 0.5rem;
+    }
+    .post-grid {
+        grid-template-columns: 1fr;
         padding: 1rem;
         gap: 1rem;
+        border-radius: 12px;
     }
 
-    .app-card {
-        padding: 1.25rem;
+    .card-title {
+        font-size: 1.1rem;
     }
 }

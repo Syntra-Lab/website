@@ -1,36 +1,24 @@
-// Card data structure for Portal apps
+// Card data structure for Syntra blog posts
 const cardData = [
     {
-        title: 'Breath',
-        description: 'Track your breathing patterns',
-        image: 'apps/breath/breath.png',
-        link: 'apps/breath/index.html',
-        comingSoon: false
-    },
-    {
-        title: 'The Hill',
-        description: 'Interactive visual novel · Coming Soon',
-        image: 'apps/the-hill/Hill.png',
-        link: null,
-        comingSoon: true
-    },
-    {
-        title: 'NumComp',
-        description: 'Visual numerical computing',
-        image: 'apps/numcomp/numnode.png',
-        link: 'apps/numcomp/index.html',
-        comingSoon: false
+        title: 'Hello World',
+        description: 'First blog post — testing Markdown rendering',
+        image: '',
+        slug: 'hello-world',
+        date: '2026-03-01',
+        draft: false,
+        type: 'md'
     }
 ];
 
 // Generate card HTML from data
 function createCardElement(card) {
     const cardDiv = document.createElement('div');
-    cardDiv.className = card.comingSoon ? 'tarot-card coming-soon' : 'tarot-card';
+    cardDiv.className = card.draft ? 'tarot-card draft' : 'tarot-card';
 
-    // Create inner HTML structure
-    const rotatorTag = card.comingSoon ? 'div' : 'a';
-    const rotatorAttrs = card.comingSoon ? '' : `href="${card.link}"`;
+    const link = card.type === 'md' ? `posts/index.html?p=${card.slug}` : `posts/${card.slug}.html`;
+    const rotatorTag = card.draft ? 'div' : 'a';
+    const rotatorAttrs = card.draft ? '' : `href="${link}"`;
 
     cardDiv.innerHTML = `
         <${rotatorTag} ${rotatorAttrs} class="card-rotator">
@@ -38,13 +26,14 @@ function createCardElement(card) {
                 <div class="card-image">
                     <img src="${card.image}" alt="${card.title}" class="card-art">
                 </div>
+                <div class="card-scrim"></div>
                 <div class="card-content">
                     <h2 class="card-title">${card.title}</h2>
                     <p class="card-description">${card.description}</p>
                 </div>
-                <div class="card-iridescent"></div>
-                <div class="card-shine"></div>
-                <div class="card-glare"></div>
+                <div class="card-meta">
+                    <span class="card-date">${card.date}</span>
+                </div>
             </div>
         </${rotatorTag}>
     `;
@@ -52,19 +41,28 @@ function createCardElement(card) {
     return cardDiv;
 }
 
+// Keep card aspect ratio in sync with the viewport
+function syncViewportRatio() {
+    document.documentElement.style.setProperty('--vp-w', window.innerWidth);
+    document.documentElement.style.setProperty('--vp-h', window.innerHeight);
+}
+syncViewportRatio();
+window.addEventListener('resize', syncViewportRatio);
+
 // Initialize cards on page load
 function initializeCards() {
-    const appGrid = document.querySelector('.app-grid');
-    if (!appGrid) return;
+    const postGrid = document.querySelector('.post-grid');
+    if (!postGrid) return;
 
-    // Clear existing cards
-    appGrid.innerHTML = '';
+    postGrid.innerHTML = '';
 
-    // Generate and append cards
     cardData.forEach(card => {
         const cardElement = createCardElement(card);
-        appGrid.appendChild(cardElement);
+        postGrid.appendChild(cardElement);
     });
+
+    // Signal that cards are in the DOM
+    document.dispatchEvent(new CustomEvent('cardsInitialized'));
 }
 
 // Initialize when DOM is ready

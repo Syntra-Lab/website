@@ -1,126 +1,82 @@
-// Simple Card Tilt Effect
+// Card Tilt + Click-to-Navigate
 
-document.addEventListener('DOMContentLoaded', () => {
-    const cards = document.querySelectorAll('.tarot-card:not(.placeholder)');
+document.addEventListener('cardsInitialized', () => {
+    const cards = document.querySelectorAll('.tarot-card:not(.draft)');
 
     cards.forEach(card => {
         let isAnimating = false;
 
         card.addEventListener('mousemove', (e) => {
-            // Don't apply tilt if card is animating
             if (isAnimating) return;
 
             const rect = card.getBoundingClientRect();
-
-            // Get mouse position relative to card center (-50 to 50)
             const x = ((e.clientX - rect.left) / rect.width) * 100 - 50;
             const y = ((e.clientY - rect.top) / rect.height) * 100 - 50;
 
-            // Calculate tilt rotation (subtle effect)
-            const rotateX = x / 3.5;
-            const rotateY = -y / 3.5;
+            const tiltX = -y / 7;
+            const tiltY = x / 7;
 
-            // Update CSS variables
-            card.style.setProperty('--rotate-x', `${rotateX}deg`);
-            card.style.setProperty('--rotate-y', `${rotateY}deg`);
+            card.style.setProperty('--tilt-x', `${tiltX}deg`);
+            card.style.setProperty('--tilt-y', `${tiltY}deg`);
         });
 
         card.addEventListener('mouseleave', () => {
-            // Don't reset tilt if card is animating
             if (isAnimating) return;
 
-            // Reset tilt
-            card.style.setProperty('--rotate-x', '0deg');
-            card.style.setProperty('--rotate-y', '0deg');
+            card.style.setProperty('--tilt-x', '0deg');
+            card.style.setProperty('--tilt-y', '0deg');
         });
 
-        // Click animation - card flies to center, spins and zooms
         const cardLink = card.querySelector('.card-rotator');
         cardLink.addEventListener('click', (e) => {
             e.preventDefault();
             const href = cardLink.href;
 
-            // Set animating flag and reset tilt immediately
             isAnimating = true;
-            card.style.setProperty('--rotate-x', '0deg');
-            card.style.setProperty('--rotate-y', '0deg');
+            card.style.setProperty('--tilt-x', '0deg');
+            card.style.setProperty('--tilt-y', '0deg');
 
-            // Get card's current position
-            const rect = card.getBoundingClientRect();
-            const cardCenterX = rect.left + rect.width / 2;
-            const cardCenterY = rect.top + rect.height / 2;
+            const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+            const fadeColor = isDark ? '#000' : '#fff';
 
-            // Calculate translation to viewport center
-            const viewportCenterX = window.innerWidth / 2;
-            const viewportCenterY = window.innerHeight / 2;
-            const translateX = viewportCenterX - cardCenterX;
-            const translateY = viewportCenterY - cardCenterY;
+            // Full-screen overlay for the fade
+            const overlay = document.createElement('div');
+            Object.assign(overlay.style, {
+                position: 'fixed',
+                inset: '0',
+                backgroundColor: fadeColor,
+                opacity: '0',
+                zIndex: '10000',
+                pointerEvents: 'none'
+            });
+            document.body.appendChild(overlay);
 
-            // Prevent page scrolling/resizing during animation
-            // Use a wrapper element instead of body to preserve logo visibility
-            const mainContent = document.getElementById('main-content');
-            if (mainContent) {
-                mainContent.style.overflow = 'hidden';
-            }
-
-            // Create animation timeline
             const tl = gsap.timeline({
                 onComplete: () => {
                     window.location.href = href;
                 }
             });
 
-            // Disable hover effects during animation
-            card.style.pointerEvents = 'none';
-
-            // Animate card to center, lift it forward
+            // Glow builds up
             tl.to(card, {
-                x: translateX,
-                y: translateY,
-                scale: 1.2,
-                z: 200,
-                duration: 0.5,
-                ease: "power2.inOut"
-            }, 0);
-
-            // Spin and zoom in - two full rotations
-            tl.to(cardLink, {
-                rotateY: 720,
-                scale: 3,
-                duration: 1.2,
-                ease: "linear"
-            }, 0);
-
-            // Fade out everything else - starts immediately
-            // Get the current theme color from CSS variable
-            const fadeColor = getComputedStyle(document.documentElement).getPropertyValue('--fade-bg-color').trim();
-            tl.to('body', {
-                backgroundColor: fadeColor,
-                duration: 0.6,
+                filter: "drop-shadow(0 0 5px white)",
+                duration: 0.8,
                 ease: "power2.out"
             }, 0);
 
-            tl.to('#main-content > *:not(.app-grid)', {
-                opacity: 0,
-                duration: 0.6,
+            // Glow eases out slowly
+            tl.to(card, {
+                filter: "drop-shadow(0 0 0px white)",
+                duration: 3.0,
                 ease: "power2.out"
-            }, 0);
+            }, 0.8);
 
-            tl.to('.tarot-card:not(.clicked)', {
-                opacity: 0,
+            // Page fades out
+            tl.to(overlay, {
+                opacity: 1,
                 duration: 0.6,
-                ease: "power2.out"
-            }, 0);
-
-            // Fade out the loading screen (logo)
-            tl.to('#loading-screen', {
-                opacity: 0,
-                duration: 0.6,
-                ease: "power2.out"
-            }, 0);
-
-            // Mark this card as clicked
-            card.classList.add('clicked');
+                ease: "power2.in"
+            }, 0.8);
         });
     });
 });
