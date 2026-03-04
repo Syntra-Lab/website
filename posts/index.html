@@ -107,7 +107,11 @@
                 document.getElementById('post-content').innerHTML =
                     '<p>This post could not be loaded.</p>' +
                     '<p><a href="../index.html">Back to home</a></p>';
+            })
+            .finally(() => {
+                if (typeof generateTOC === 'function') generateTOC();
             });
     </script>
+    <script src="../toc.js"></script>
 </body>
 </html>

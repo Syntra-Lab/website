@@ -18,6 +18,12 @@ article {
     line-height: 1.8;
 }
 
+.post-layout article {
+    margin: 0;
+    padding: 0;
+    max-width: none;
+}
+
 /* Post header */
 .post-header {
     margin-bottom: 2.5rem;
@@ -131,5 +137,101 @@ article {
 
     .post-title {
         font-size: 1.5rem;
+    }
+}
+
+/* Table of Contents */
+.post-layout {
+    display: flex;
+    gap: 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 1.5rem 4rem;
+}
+
+.post-layout article {
+    flex: 1;
+    max-width: 680px;
+    margin: 0;
+    padding: 0;
+}
+
+.post-toc {
+    position: sticky;
+    top: 5rem;
+    align-self: flex-start;
+    width: 200px;
+    flex-shrink: 0;
+    padding-top: 0.5rem;
+}
+
+.post-toc-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+}
+
+.post-toc ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.post-toc li {
+    margin: 0;
+}
+
+.post-toc a {
+    display: block;
+    padding: 0.35rem 0 0.35rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    margin-left: -1px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.post-toc a:hover {
+    color: var(--text-primary);
+    border-left-color: var(--accent);
+}
+
+@media (max-width: 900px) {
+    .post-layout {
+        flex-direction: column;
+        padding: 4rem 1rem 3rem;
+    }
+
+    .post-toc {
+        position: static;
+        width: 100%;
+        order: -1;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .post-toc ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        border-left: none;
+    }
+
+    .post-toc a {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 4px;
+        border-left: none;
+        margin-left: 0;
+    }
+
+    .post-toc a:hover {
+        background: rgba(255, 255, 255, 0.1);
     }
 }
