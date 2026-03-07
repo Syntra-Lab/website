@@ -6,7 +6,7 @@
     <title>Syntra</title>
     <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
     <link rel="stylesheet" href="../global.css?v=4">
-    <link rel="stylesheet" href="../post.css?v=3">
+    <link rel="stylesheet" href="../post.css?v=5">
 </head>
 <body class="post-page">
     <!-- Logo -->
@@ -44,6 +44,7 @@
     </article>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../toc.js"></script>
     <script src="../theme.js"></script>
     <script>
         const params = new URLSearchParams(window.location.search);
@@ -101,17 +102,16 @@
                 document.getElementById('post-date').textContent = meta.date || '';
 
                 document.getElementById('post-content').innerHTML = marked.parse(body);
+                
+                // Generate TOC after content is loaded
+                if (typeof generateTOC === 'function') generateTOC();
             })
             .catch(() => {
                 document.getElementById('post-title').textContent = 'Not Found';
                 document.getElementById('post-content').innerHTML =
                     '<p>This post could not be loaded.</p>' +
                     '<p><a href="../index.html">Back to home</a></p>';
-            })
-            .finally(() => {
-                if (typeof generateTOC === 'function') generateTOC();
             });
     </script>
-    <script src="../toc.js"></script>
 </body>
 </html>
