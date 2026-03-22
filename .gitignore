@@ -29,3 +29,7 @@ pnpm-debug.log*
 latex_output/*.aux
 latex_output/*.log
 latex_output/*.out
+
+# Drafts (not for publication)
+docs/_drafts/
+_drafts/
