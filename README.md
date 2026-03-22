@@ -9,6 +9,10 @@ Research documents on mathematical frameworks, theological interpretation system
 - [Methodology](METHODOLOGY.html)
 - [Literature Review: Quranic Arabic NLP & ML](literature_review_quran_arabic_nlp_ml.html)
 
+## Open Questions
+
+- [Open Questions](open-questions.html) - Unresolved research questions guiding ongoing investigation
+
 ## Technical Design
 
 - [Technical Design Document](Technical%20Design%20Document/index.html)
