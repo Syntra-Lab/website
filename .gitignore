@@ -22,3 +22,10 @@ pnpm-debug.log*
 
 # Jupyter
 *.ipynb
+*.aux
+*.log
+*.out
+*.synctex.gz
+latex_output/*.aux
+latex_output/*.log
+latex_output/*.out
