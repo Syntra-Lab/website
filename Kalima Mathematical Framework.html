@@ -74,7 +74,20 @@ window.MathJax = {
     display: block;
     text-align: center;
     margin: 1em 0;
-    overflow-x: auto;
+    overflow: visible;
+  }
+
+  /* MathJax - full equation display */
+  mjx-container {
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    max-width: none !important;
+  }
+  mjx-container > svg {
+    max-width: none !important;
+  }
+  .MathJax {
+    overflow: visible !important;
   }
 
   /* Tables */
