@@ -3,8 +3,12 @@ name: CSS Conformance
 on:
   push:
     branches: [main, master]
+    paths:
+      - '**.html'
   pull_request:
     types: [opened, synchronize]
+    paths:
+      - '**.html'
 
 jobs:
   validate-css:
@@ -19,14 +23,27 @@ jobs:
           echo "Checking for HTML files with incorrect CSS paths..."
           ERROR_COUNT=0
           
-          for file in $(git diff --name-only ${{ github.base.sha }} HEAD -- '*.html' 2>/dev/null || git diff --name-only HEAD~1 HEAD -- '*.html'); do
+          # Determine base and head refs based on event type
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            BASE_REF="${{ github.event.pull_request.base.sha }}"
+            HEAD_REF="${{ github.event.pull_request.head.sha }}"
+          else
+            BASE_REF="HEAD~1"
+            HEAD_REF="HEAD"
+          fi
+          
+          echo "Comparing $BASE_REF to $HEAD_REF"
+          
+          for file in $(git diff --name-only "$BASE_REF" "$HEAD_REF" -- '*.html' 2>/dev/null); do
             if [ -f "$file" ]; then
+              echo "Checking file: $file"
+              
               # Determine expected CSS path based on file location
               case "$file" in
                 meta/*)
                   EXPECTED='href="../styles.css"'
                   ;;
-                research/*|technical/*|*)
+                *)
                   EXPECTED='href="styles.css"'
                   ;;
               esac
