@@ -4,16 +4,16 @@ Research documents on mathematical frameworks, theological interpretation system
 
 ## Chapters
 
-1. [Organic Quranic Methodology](methodology.html) — Core principles for interpreting the Quran
-2. [History of Quranic Computation](quran-computation-history.html) — From Flügel to modern NLP
-3. [Literature Review](literature-review.html) — Quranic Arabic NLP & ML landscape
-4. [Kalima Mathematical Framework](math-framework.html) — Root space, gauge fields, UOR
-5. [Limits of the Mathematics](math-limits.html) — What our frameworks can and cannot tell us
-6. [Database Investigation](database-investigation.html) — SQL vs Vector vs Graph tradeoffs
-7. [Architecture](architecture.html) — System design and components
-8. [Quran DSL](quran-dsl.html) — Domain-specific language specification
-9. [Open Questions](open-questions.html) — Unresolved research questions
-10. [Our Journey](our-journey.html) — How we got here
+1. [Our Journey](journey.html) — How we got here
+2. [Organic Quranic Methodology](methodology.html) — Core principles for interpreting the Quran
+3. [History of Quranic Computation](quran-computation-history.html) — From Flügel to modern NLP
+4. [Literature Review](literature-review.html) — Quranic Arabic NLP & ML landscape
+5. [Kalima Mathematical Framework](math-framework.html) — Root space, gauge fields, UOR
+6. [Limits of the Mathematics](math-limits.html) — What our frameworks can and cannot tell us
+7. [Database Investigation](database-investigation.html) — SQL vs Vector vs Graph tradeoffs
+8. [Architecture](architecture.html) — System design and components
+9. [Quran DSL](quran-dsl.html) — Domain-specific language specification
+10. [Open Questions](open-questions.html) — Unresolved research questions
 
 ## References
 
