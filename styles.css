@@ -154,6 +154,30 @@ pre code {
   margin-bottom: 2em;
 }
 
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 3em;
+  padding-top: 1em;
+  border-top: 1px solid #ddd;
+  font-size: 13pt;
+}
+
+.chapter-nav a {
+  color: #2a5db0;
+  text-decoration: none;
+  padding: 0.5em 1em;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.chapter-nav a:hover {
+  background-color: #f0f0f0;
+  color: #1a4a90;
+}
+
 @media (max-width: 800px) {
   body {
     padding: 0.5in 20px;
