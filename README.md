@@ -11,6 +11,7 @@ Research documents on mathematical frameworks, theological interpretation system
 - [Kalima Mathematical Framework](research/math-framework.html)
 - [Limits of the Mathematics](research/math-limits.html)
 - [Literature Review: Quranic Arabic NLP & ML](research/literature-review.html)
+- [History of Quranic Computation](research/quran-computation-history.html)
 - [Open Questions](research/open-questions.html)
 - [Database Investigation](research/database-investigation.html)
 
